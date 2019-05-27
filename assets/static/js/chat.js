@@ -35,7 +35,7 @@ function refillInput(val) {
 }
 
 function send(message) {
-    channel.push("new_msg", {userName: window.userName, body: message}, 10000)
+    channel.push("new_msg", {userName: localStorage.getItem('userName'), body: message}, 10000)
         .receive("error", (reasons) => {
             console.log(reasons);
             refillInput(message);
@@ -43,17 +43,29 @@ function send(message) {
     clearInput();
 };
 
+const getUserNameHTML = (userName) => {
+    const selfUserName = localStorage.getItem('userName');
+    return selfUserName === userName ? `<p style="color:blue;">${userName}(You):</p>` : `<p style="color:red;word-break: break-all">${userName}:</p>`;
+}
+
 function addMessage({body, userName}) {
+    if ($("#listMessages").children().length === 100) {
+        $("#listMessages").children().get(0).remove();
+    }
+
     $("#listMessages").append(
-        `<li class="left clearfix list-group-item" style="margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
-            <div class="chat-body clearfix">
-                <div class="header">
-                    <strong class="primary-font">${userName}</strong> <small class="pull-right text-muted">
+        `<li class="list-group-item" style="margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
+            <div class="container-fluid"> 
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        ${getUserNameHTML(userName)}
+                    </div>
+                    <div class="col-11">
+                        <p>${body}</p>
+                    </div>
                 </div>
-                <p>${body}</p>
             </div>
         </li>`
     )
-    $("#messageBox").animate({scrollTop: $('#messageBox').get(0).scrollHeight}, 500);
-
-}
+    $("#messageBox").animate({scrollTop: $('#messageBox').get(0).scrollHeight}, 1);
+};
