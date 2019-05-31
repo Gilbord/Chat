@@ -26,7 +26,10 @@ defmodule Chat.Message do
 
   def get(limit) do
     Message
+    |> last
     |> limit(^limit)
+    |> subquery()
+    |> order_by([m], [asc: m.inserted_at])
     |> Repo.all()
   end
 
