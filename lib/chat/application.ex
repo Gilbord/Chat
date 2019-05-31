@@ -11,9 +11,10 @@ defmodule Chat.Application do
       # Start the Ecto repository
       Chat.Repo,
       # Start the endpoint when the application starts
-      ChatWeb.Endpoint
+      ChatWeb.Endpoint,
       # Starts a worker by calling: Chat.Worker.start_link(arg)
       # {Chat.Worker, arg},
+      Chat.PostgreSQLGenServer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -28,4 +29,8 @@ defmodule Chat.Application do
     ChatWeb.Endpoint.config_change(changed, removed)
     :ok
   end
+
+  defdelegate insert(message, user_name), to: Chat.PostgreSQLGenServer
+  defdelegate get(), to: Chat.PostgreSQLGenServer
+
 end
