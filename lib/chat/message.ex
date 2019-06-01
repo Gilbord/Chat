@@ -33,4 +33,8 @@ defmodule Chat.Message do
     |> Repo.all()
   end
 
+  def clear() do
+    Repo.delete_all(Message)
+  end
+
 end

@@ -10,9 +10,11 @@
                                     <li class="list-group-item" style="margin-top: 5px; margin-bottom: 5px; margin-right: 5px;">
                                         <div class="container-fluid">
                                             <div class="row align-items-center">
-                                                <div class="col-1">
-                                                    <p style="color:black;"><%= message.user_name %>:</p>
-                                                </div>
+                                                <%= if message.user_name == @user_name do %>
+                                                    <p style="color:blue;"><%=message.user_name%>(You):</p>
+                                                <% else %>
+                                                    <p style="color:red;word-break: break-all"><%= message.user_name %>:</p>
+                                                <% end %>
                                                 <div class="col-11">
                                                     <p><%= message.message %></p>
                                                 </div>
@@ -44,3 +46,5 @@
         </div>
     </div>
 </div>
+
+<script> window.userName = "<%= @user_name %>" </script>

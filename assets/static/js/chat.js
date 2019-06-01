@@ -23,18 +23,9 @@ $(window).on('load', function () {
     });
 });
 
-const userName = localStorage.getItem('userName');
-
-if(!userName) {
-    $(location).attr('href', '/')
-}
-
-const socket = new Socket("/socket", {params: {userName: userName}});
+const socket = new Socket("/socket", {params: {userName: window.userName}});
 
 socket.connect();
-socket.onClose(() => {
-    channel.push('leave', {}, 10000);
-});
 
 const channel = socket.channel(`room:lobby`, {});
 
@@ -68,7 +59,7 @@ function send(message) {
 }
 
 const getUserNameHTML = (userName) => {
-    const selfUserName = localStorage.getItem('userName');
+    const selfUserName = window.userName;
     return selfUserName === userName ? `<p style="color:blue;">${userName}(You):</p>` : `<p style="color:red;word-break: break-all">${userName}:</p>`;
 };
 

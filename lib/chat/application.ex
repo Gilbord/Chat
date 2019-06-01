@@ -32,5 +32,6 @@ defmodule Chat.Application do
 
   defdelegate insert(message, user_name), to: Chat.PostgreSQLGenServer
   defdelegate get(), to: Chat.PostgreSQLGenServer
+  defdelegate clear(), to: Chat.PostgreSQLGenServer
 
 end

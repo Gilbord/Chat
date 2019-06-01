@@ -24,8 +24,8 @@ defmodule Chat.PostgreSQLGenServer do
     GenServer.call(PostgreSQLGenServer, {:get})
   end
 
-  def clear do
-    :ok = GenServer.cast(PostgreSQLGenServer, :clear)
+  def clear() do
+    :ok = GenServer.cast(PostgreSQLGenServer, {:clear})
   end
 
   ### Server Callbacks
@@ -37,6 +37,14 @@ defmodule Chat.PostgreSQLGenServer do
     {
       :noreply,
       Message.insert_and_get(message, user_name, @limit)
+    }
+  end
+
+  def handle_cast({:clear}, _state) do
+    Message.clear()
+    {
+      :noreply,
+      zero_state()
     }
   end
 

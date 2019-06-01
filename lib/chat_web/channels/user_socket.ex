@@ -1,6 +1,8 @@
 defmodule ChatWeb.UserSocket do
   use Phoenix.Socket
 
+  alias Chat.XSSAttack
+
   ## Channels
   channel "room:*", ChatWeb.RoomChannel
 
@@ -16,7 +18,7 @@ defmodule ChatWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(%{"userName" => user_name}, socket, _connect_info) do
-    {:ok, assign(socket, :current_user, user_name)}
+    {:ok, assign(socket, :current_user, XSSAttack.xss_string_convert(user_name))}
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
